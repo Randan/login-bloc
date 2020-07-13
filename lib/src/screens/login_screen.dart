@@ -8,51 +8,49 @@ class LoginScreen extends StatelessWidget {
 
     return Container(
       margin: EdgeInsets.symmetric(vertical: 25.0, horizontal: 10.0),
-      child: Column(
-        children: [
-          emailField(bloc),
-          passwordField(bloc),
-          submitButton()
-        ]
-      )
+      child: Column(children: [
+        emailField(bloc),
+        passwordField(bloc),
+        submitButton(bloc),
+      ]),
     );
   }
 
-  Widget emailField(Bloc bloc) =>
-    StreamBuilder(
-      stream: bloc.email,
-      builder: (context, snapshot) =>
-        TextField(
+  Widget emailField(Bloc bloc) => StreamBuilder(
+        stream: bloc.email,
+        builder: (context, snapshot) => TextField(
           onChanged: bloc.changeEmail,
           keyboardType: TextInputType.emailAddress,
           decoration: InputDecoration(
             labelText: 'Email',
             hintText: 'you@example.com',
-            errorText: snapshot.error
-          )
-        )
-    );
+            errorText: snapshot.error,
+          ),
+        ),
+      );
 
-  Widget passwordField(Bloc bloc) =>
-    StreamBuilder(
-      stream: bloc.password,
-      builder: (context, snapshot) =>
-        TextField(
+  Widget passwordField(Bloc bloc) => StreamBuilder(
+        stream: bloc.password,
+        builder: (context, snapshot) => TextField(
           onChanged: bloc.changePassword,
           obscureText: true,
           decoration: InputDecoration(
             labelText: 'Password',
-            errorText: snapshot.error
-          )
-        )
-    );
+            errorText: snapshot.error,
+          ),
+        ),
+      );
 
-  Widget submitButton() =>
-    RaisedButton(
-      child: Text('Login'),
-      color: Colors.orange,
-      onPressed: () {
-        return null;
-      }
-    );
+  Widget submitButton(Bloc bloc) => StreamBuilder(
+        stream: bloc.submitValid,
+        builder: (context, snapshot) => RaisedButton(
+          child: Text('Login'),
+          color: Colors.orange,
+          onPressed: (!snapshot.hasData || snapshot.hasError)
+              ? null
+              : () {
+                  print('Login !!!');
+                },
+        ),
+      );
 }
